@@ -1,5 +1,7 @@
 package net.zarto.modtest;
 
+import net.minecraft.client.gui.screens.CreateBuffetWorldScreen;
+import net.zarto.modtest.item.ModItems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -54,11 +56,13 @@ public class ModTest {
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
+        ModItems.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -67,7 +71,8 @@ public class ModTest {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+        if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
+            event.accept(ModItems.COPPER_COIN);
         }
     }
 
